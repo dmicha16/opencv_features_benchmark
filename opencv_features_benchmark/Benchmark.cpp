@@ -11,9 +11,7 @@ Benchmark::~Benchmark() {
 }
 
 vector<Mat> Benchmark::get_images() {
-	vector<Mat> return_images = images;
-	WINPAUSE;
-	return return_images;
+	return images;
 }
 
 void Benchmark::draw_keypoints(vector<Mat> images, vector<ImageFeatures> image_features, vector<MatchesInfo> pairwise_matches) {
@@ -22,14 +20,14 @@ void Benchmark::draw_keypoints(vector<Mat> images, vector<ImageFeatures> image_f
 
 void Benchmark::draw_my_matches(vector<ImageFeatures> image_features, vector<MatchesInfo> pairwise_matches) {
 
-	String output_location = "../opencv_features_benchmarke/Images/test_1.jpg";
+	String output_location = "../opencv_features_benchmark/Images/Results/test_1.jpg";
 	vector<Mat> images = get_images();
 	vector<DMatch> matches = pairwise_matches[1].matches;
 	vector<char> mask(matches.size(), 1);
 	Mat output_img;
 
 	try {
-		drawMatches(images[0], image_features[0].keypoints, images[1], image_features[0].keypoints, matches, output_img, Scalar::all(-1),
+		drawMatches(images[0], image_features[0].keypoints, images[1], image_features[1].keypoints, matches, output_img, Scalar::all(-1),
 			Scalar::all(-1), mask, DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
 	}
 	catch (const std::exception& e) {
@@ -38,14 +36,12 @@ void Benchmark::draw_my_matches(vector<ImageFeatures> image_features, vector<Mat
 
 	Mat outImg;
 	resize(output_img, outImg, cv::Size(), 1, 1);
-	imshow("Matching", outImg);
-	waitKey(0);
-
+	//imshow("Matching", outImg);
 	imwrite(output_location, outImg);
+	WINPAUSE;
 }
 
 void Benchmark::read_images_(string path) {
-
 	vector<String> photos;
 
 	for (auto & file : experimental::filesystem::directory_iterator(path))
@@ -53,7 +49,10 @@ void Benchmark::read_images_(string path) {
 
 	glob(path, photos, false);
 
+	//string file_name = "C:/photos/T4D/KEYPOINTS/test";
+
 	cout << "Images read: " << photos.size() << endl;
+	WINPAUSE;
 	for (int i = 0; i < photos.size(); i++) {
 		img_names.push_back(photos[i]);
 	}
@@ -62,12 +61,13 @@ void Benchmark::read_images_(string path) {
 	vector<Size> full_img_sizes(num_images);
 
 	images.resize(num_images);
-	Benchmark::upload_images_(images, full_img_sizes);
+	images = upload_images_(images, full_img_sizes);
 }
 
-void Benchmark::upload_images_(vector<Mat> images, vector<Size> full_img_sizes) {
+vector<Mat> Benchmark::upload_images_(vector<Mat> images, vector<Size> full_img_sizes) {
 
 	Mat full_img, img;
+
 	double work_megapix = 0.6;
 	double seam_megapix = 0.1;
 	double work_scale = 1, seam_scale = 1, compose_scale = 1, seam_work_aspect = 1;
@@ -98,4 +98,5 @@ void Benchmark::upload_images_(vector<Mat> images, vector<Size> full_img_sizes) 
 	}
 	full_img.release();
 	img.release();
+	return images;
 }

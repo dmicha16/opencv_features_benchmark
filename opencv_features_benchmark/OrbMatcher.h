@@ -3,13 +3,14 @@
 #include "Orb.h"
 #include "Brisk.h"
 
-class Matcher :
-	public Akaze, public Orb, public Brisk {
+class OrbMatcher :
+	public Orb {
 public:
-	Matcher(ToMatch features_type);
-	~Matcher();
+	OrbMatcher();
+	~OrbMatcher();
+	void matcher_bestof2_nearest_();
 private:
-	void matcher_bestof2_nearest_(ToMatch features_type);
+	
 	void matcher_bestof2nearest_range_(ToMatch features_type);
 	void matcher_affinebestof2_nearest_(ToMatch features_type);
 };

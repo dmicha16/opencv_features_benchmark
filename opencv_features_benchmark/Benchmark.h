@@ -47,6 +47,6 @@ private:
 	vector<String> img_names;
 	vector<Mat> images;
 	void read_images_(string path);
-	void upload_images_(vector<Mat> images, vector<Size> full_img_sizes);
+	vector<Mat> upload_images_(vector<Mat> images, vector<Size> full_img_sizes);
 };
 

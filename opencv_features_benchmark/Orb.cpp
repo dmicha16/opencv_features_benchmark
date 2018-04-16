@@ -4,11 +4,11 @@
 Orb::Orb() {
 }
 
-vector<ImageFeatures> Orb::get_orb_image_features() {
-	return image_features;
+Orb::~Orb() {
 }
 
-Orb::~Orb() {
+vector<ImageFeatures> Orb::get_orb_image_features() {
+	return image_features;
 }
 
 void Orb::find_features(vector<Mat> images) {
@@ -17,11 +17,7 @@ void Orb::find_features(vector<Mat> images) {
 	image_features.resize(num_images);
 	string features_out = "Features in image #";
 
-	cout << images.size() << endl;
-	cout << num_images << endl;
-
-	for (int i = 0; i < num_images; ++i) {		
-		WINPAUSE;
+	for (int i = 0; i < num_images; i++) {		
 		float scaleFactor = 1.2f;
 		int nlevels = 8;
 		int edgeThreshold = 31;

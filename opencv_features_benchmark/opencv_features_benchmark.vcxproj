@@ -151,7 +151,7 @@
     <ClInclude Include="Akaze.h" />
     <ClInclude Include="Benchmark.h" />
     <ClInclude Include="Brisk.h" />
-    <ClInclude Include="Matcher.h" />
+    <ClInclude Include="OrbMatcher.h" />
     <ClInclude Include="Orb.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -160,7 +160,7 @@
     <ClCompile Include="Akaze.cpp" />
     <ClCompile Include="Benchmark.cpp" />
     <ClCompile Include="Brisk.cpp" />
-    <ClCompile Include="Matcher.cpp" />
+    <ClCompile Include="OrbMatcher.cpp" />
     <ClCompile Include="opencv_features_benchmark.cpp" />
     <ClCompile Include="Orb.cpp" />
     <ClCompile Include="stdafx.cpp">
