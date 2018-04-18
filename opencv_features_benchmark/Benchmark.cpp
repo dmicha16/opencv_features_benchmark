@@ -20,19 +20,7 @@ void Benchmark::draw_keypoints(vector<Mat> images, vector<ImageFeatures> image_f
 
 void Benchmark::draw_my_matches(vector<ImageFeatures> image_features, vector<MatchesInfo> pairwise_matches, string matcher_type, ResultsType results_type) {
 
-	string output_location = "../opencv_features_benchmark/Images";
-
-	switch (results_type) {
-	case ORB_R:
-		output_location += "/ORB/test_" + matcher_type + ".jpg";
-		break;
-	case BRISK_R:
-		output_location += "/BRISK/" + matcher_type + ".jpg";
-		break;
-	case AKAZE_R:
-		output_location += "/AKAZE/" + matcher_type + ".jpg";
-		break;
-	}
+	string output_location = construct_file_name(matcher_type, results_type);
 
 	vector<Mat> images = get_images();
 	vector<DMatch> matches = pairwise_matches[1].matches;
@@ -68,6 +56,7 @@ void Benchmark::read_images_(string path) {
 	WINPAUSE;
 	for (int i = 0; i < photos.size(); i++) {
 		img_names.push_back(photos[i]);
+		cout << photos[i] << endl;
 	}
 
 	num_images = static_cast <int> (img_names.size());
@@ -112,4 +101,34 @@ vector<Mat> Benchmark::upload_images_(vector<Mat> images, vector<Size> full_img_
 	full_img.release();
 	img.release();
 	return images;
+}
+
+string Benchmark::construct_file_name(string matcher_type, ResultsType results_type) {
+
+	string output_location = "../opencv_features_benchmark/Images";
+	string c;
+	int r1, r2, r3;
+	srand(time(NULL));
+
+	for (int i = 0; i < 3; i++){
+		r1 = rand() % 26;
+		r2 = rand() % 26;
+		r3 = rand() % 26;
+		c = 'a' + r1;
+		c += 'a' + r2;
+		c += 'a' + r3;
+	}
+
+	switch (results_type) {
+	case ORB_R:
+		output_location += "/ORB/" + matcher_type + "_" + c + ".jpg";
+		break;
+	case BRISK_R:
+		output_location += "/BRISK/" + matcher_type + "_" + c + ".jpg";
+		break;
+	case AKAZE_R:
+		output_location += "/AKAZE/" + matcher_type + "_" + c + ".jpg";
+		break;
+	}
+	return output_location;
 }

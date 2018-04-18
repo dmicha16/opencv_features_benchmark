@@ -1,9 +1,12 @@
 #pragma once
+#pragma warning(disable : 4996)
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <algorithm>
 #include <filesystem>
+#include<cstdlib>
+#include<ctime>
 
 #include "opencv2/opencv_modules.hpp"
 #include <opencv2/features2d/features2d.hpp>
@@ -48,5 +51,6 @@ private:
 	vector<Mat> images;
 	void read_images_(string path);
 	vector<Mat> upload_images_(vector<Mat> images, vector<Size> full_img_sizes);
+	string construct_file_name(string matcher_type, ResultsType results_type);
 };
 
