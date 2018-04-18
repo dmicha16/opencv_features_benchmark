@@ -32,7 +32,7 @@ using namespace cv::detail;
 #define WINPAUSE system("pause")
 #endif
 
-enum ToMatch { AKAZETYPE = 1, ORBTYPE = 2, BRISKTYPE = 3 };
+enum ResultsType {ORB_R = 1, AKAZE_R = 2, BRISK_R = 3};
 
 class Benchmark {
 public:
@@ -40,7 +40,7 @@ public:
 	~Benchmark();
 	vector<Mat> get_images();
 	void draw_keypoints(vector<Mat> images, vector<ImageFeatures> image_features, vector<MatchesInfo> pairwise_matches);
-	void draw_my_matches(vector<ImageFeatures> image_features, vector<MatchesInfo> pairwise_matches);
+	void draw_my_matches(vector<ImageFeatures> image_features, vector<MatchesInfo> pairwise_matches, string matcher_type, ResultsType results_type);
 
 private:
 	int num_images;

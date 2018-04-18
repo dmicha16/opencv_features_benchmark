@@ -18,9 +18,22 @@ void Benchmark::draw_keypoints(vector<Mat> images, vector<ImageFeatures> image_f
 	
 }
 
-void Benchmark::draw_my_matches(vector<ImageFeatures> image_features, vector<MatchesInfo> pairwise_matches) {
+void Benchmark::draw_my_matches(vector<ImageFeatures> image_features, vector<MatchesInfo> pairwise_matches, string matcher_type, ResultsType results_type) {
 
-	String output_location = "../opencv_features_benchmark/Images/Results/test_1.jpg";
+	string output_location = "../opencv_features_benchmark/Images";
+
+	switch (results_type) {
+	case ORB_R:
+		output_location += "/ORB/test_" + matcher_type + ".jpg";
+		break;
+	case BRISK_R:
+		output_location += "/BRISK/" + matcher_type + ".jpg";
+		break;
+	case AKAZE_R:
+		output_location += "/AKAZE/" + matcher_type + ".jpg";
+		break;
+	}
+
 	vector<Mat> images = get_images();
 	vector<DMatch> matches = pairwise_matches[1].matches;
 	vector<char> mask(matches.size(), 1);
@@ -38,7 +51,7 @@ void Benchmark::draw_my_matches(vector<ImageFeatures> image_features, vector<Mat
 	resize(output_img, outImg, cv::Size(), 1, 1);
 	//imshow("Matching", outImg);
 	imwrite(output_location, outImg);
-	WINPAUSE;
+	printf("Image result written.\n");
 }
 
 void Benchmark::read_images_(string path) {

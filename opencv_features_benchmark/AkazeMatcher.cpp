@@ -1,21 +1,20 @@
 #include "stdafx.h"
-#include "OrbMatcher.h"
+#include "AkazeMatcher.h"
 
 
-OrbMatcher::OrbMatcher() {
+AkazeMatcher::AkazeMatcher() {
 }
 
-
-OrbMatcher::~OrbMatcher() {
+AkazeMatcher::~AkazeMatcher() {
 }
 
-void OrbMatcher::matcher() {
+void AkazeMatcher::matcher() {
 
 	float match_conf = 0.3f;
 	bool try_cuda = false;
 	int range_width = -1;
 
-	vector<ImageFeatures> image_features = get_orb_image_features();
+	vector<ImageFeatures> image_features = get_akaze_image_features();
 	vector<MatchesInfo> pairwise_matches;
 	Ptr<FeaturesMatcher> current_matcher;
 	string matcher_type;
@@ -47,7 +46,7 @@ void OrbMatcher::matcher() {
 			cout << e.what() << endl;
 		}
 
-		draw_my_matches(image_features, pairwise_matches, matcher_type, ORB_R);
+		draw_my_matches(image_features, pairwise_matches, matcher_type, AKAZE_R);
 		pairwise_matches.clear();
 	}
 }

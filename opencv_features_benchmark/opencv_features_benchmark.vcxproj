@@ -149,6 +149,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Akaze.h" />
+    <ClInclude Include="AkazeMatcher.h" />
     <ClInclude Include="Benchmark.h" />
     <ClInclude Include="Brisk.h" />
     <ClInclude Include="OrbMatcher.h" />
@@ -158,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Akaze.cpp" />
+    <ClCompile Include="AkazeMatcher.cpp" />
     <ClCompile Include="Benchmark.cpp" />
     <ClCompile Include="Brisk.cpp" />
     <ClCompile Include="OrbMatcher.cpp" />

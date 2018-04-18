@@ -13,7 +13,7 @@ vector<ImageFeatures> Orb::get_orb_image_features() {
 
 void Orb::find_features(vector<Mat> images) {
 
-	num_images = images.size();
+	num_images = static_cast<int> (images.size());
 	image_features.resize(num_images);
 	string features_out = "Features in image #";
 

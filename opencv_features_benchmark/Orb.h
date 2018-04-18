@@ -1,5 +1,6 @@
 #pragma once
 #include "Benchmark.h"
+
 class Orb :
 	public Benchmark {
 public:
