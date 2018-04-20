@@ -5,6 +5,6 @@ class AkazeMatcher :
 public:
 	AkazeMatcher();
 	~AkazeMatcher();
-	void matcher();
+	void matcher(int image_index);
 };
 

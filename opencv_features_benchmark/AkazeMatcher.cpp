@@ -8,7 +8,7 @@ AkazeMatcher::AkazeMatcher() {
 AkazeMatcher::~AkazeMatcher() {
 }
 
-void AkazeMatcher::matcher() {
+void AkazeMatcher::matcher(int image_index) {
 
 	float match_conf = 0.3f;
 	bool try_cuda = false;
@@ -46,7 +46,7 @@ void AkazeMatcher::matcher() {
 			cout << e.what() << endl;
 		}
 
-		draw_my_matches(image_features, pairwise_matches, matcher_type, AKAZE_R);
+		draw_my_matches(image_features, pairwise_matches, matcher_type, AKAZE_R, image_index);
 		pairwise_matches.clear();
 	}
 }

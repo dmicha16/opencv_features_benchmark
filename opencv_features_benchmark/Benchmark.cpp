@@ -18,9 +18,9 @@ void Benchmark::draw_keypoints(vector<Mat> images, vector<ImageFeatures> image_f
 	
 }
 
-void Benchmark::draw_my_matches(vector<ImageFeatures> image_features, vector<MatchesInfo> pairwise_matches, string matcher_type, ResultsType results_type) {
+void Benchmark::draw_my_matches(vector<ImageFeatures> image_features, vector<MatchesInfo> pairwise_matches, string matcher_type, ResultsType results_type, int image_index) {
 
-	string output_location = construct_file_name(matcher_type, results_type);
+	string output_location = construct_file_name(matcher_type, results_type, image_index);
 
 	vector<Mat> images = get_images();
 	vector<DMatch> matches = pairwise_matches[1].matches;
@@ -45,12 +45,10 @@ void Benchmark::draw_my_matches(vector<ImageFeatures> image_features, vector<Mat
 void Benchmark::read_images_(string path) {
 	vector<String> photos;
 
-	for (auto & file : experimental::filesystem::directory_iterator(path))
-		cout << file << endl;
+	/*for (auto & file : experimental::filesystem::directory_iterator(path))
+		cout << file << endl;*/
 
 	glob(path, photos, false);
-
-	//string file_name = "C:/photos/T4D/KEYPOINTS/test";
 
 	cout << "Images read: " << photos.size() << endl;
 	WINPAUSE;
@@ -103,10 +101,10 @@ vector<Mat> Benchmark::upload_images_(vector<Mat> images, vector<Size> full_img_
 	return images;
 }
 
-string Benchmark::construct_file_name(string matcher_type, ResultsType results_type) {
+string Benchmark::construct_file_name(string matcher_type, ResultsType results_type, int image_index) {
 
 	string output_location = "../opencv_features_benchmark/Images";
-	string c;
+	/*string c;
 	int r1, r2, r3;
 	srand(time(NULL));
 
@@ -117,17 +115,17 @@ string Benchmark::construct_file_name(string matcher_type, ResultsType results_t
 		c = 'a' + r1;
 		c += 'a' + r2;
 		c += 'a' + r3;
-	}
+	}*/
 
 	switch (results_type) {
 	case ORB_R:
-		output_location += "/ORB/" + matcher_type + "_" + c + ".jpg";
+		output_location += "/ORB/" + matcher_type + "_" + to_string(image_index) + "-" + to_string(image_index + 1) + ".jpg";
 		break;
 	case BRISK_R:
-		output_location += "/BRISK/" + matcher_type + "_" + c + ".jpg";
+		output_location += "/BRISK/" + matcher_type + "_" + to_string(image_index) + "-" + to_string(image_index + 1) + ".jpg";
 		break;
 	case AKAZE_R:
-		output_location += "/AKAZE/" + matcher_type + "_" + c + ".jpg";
+		output_location += "/AKAZE/" + matcher_type + "_" + to_string(image_index) + "-" + to_string(image_index + 1) + ".jpg";
 		break;
 	}
 	return output_location;

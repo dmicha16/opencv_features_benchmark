@@ -5,6 +5,6 @@ class BriskMatcher :
 public:
 	BriskMatcher();
 	~BriskMatcher();
-	void matcher();
+	void matcher(int image_index);
 };
 

@@ -43,7 +43,7 @@ public:
 	~Benchmark();
 	vector<Mat> get_images();
 	void draw_keypoints(vector<Mat> images, vector<ImageFeatures> image_features, vector<MatchesInfo> pairwise_matches);
-	void draw_my_matches(vector<ImageFeatures> image_features, vector<MatchesInfo> pairwise_matches, string matcher_type, ResultsType results_type);
+	void draw_my_matches(vector<ImageFeatures> image_features, vector<MatchesInfo> pairwise_matches, string matcher_type, ResultsType results_type, int image_index);
 
 private:
 	int num_images;
@@ -51,6 +51,6 @@ private:
 	vector<Mat> images;
 	void read_images_(string path);
 	vector<Mat> upload_images_(vector<Mat> images, vector<Size> full_img_sizes);
-	string construct_file_name(string matcher_type, ResultsType results_type);
+	string construct_file_name(string matcher_type, ResultsType results_type, int image_index);
 };
 

@@ -6,7 +6,7 @@ class OrbMatcher :
 public:
 	OrbMatcher();
 	~OrbMatcher();
-	void matcher();
+	void matcher(int image_index);
 private:
 };
 
