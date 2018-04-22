@@ -17,6 +17,7 @@ void Benchmark::draw_my_matches(ImageParams image_params) {
 
 	string output_location = construct_file_name(image_params.matcher_type, image_params.results_type, image_params.image_index);
 	int image_idx = image_params.image_index;
+	cout << "image_params.images.size(): " << image_params.images.size() << endl;
 	vector<Mat> images = image_params.images;
 
 	vector<DMatch> matches = image_params.pairwise_matches[1].matches;
@@ -24,8 +25,8 @@ void Benchmark::draw_my_matches(ImageParams image_params) {
 	Mat output_img;
 
 	try {
-		drawMatches(images[image_params.image_index], image_params.image_features[0].keypoints,
-			images[image_params.image_index + 1], image_params.image_features[1].keypoints, matches, output_img, Scalar::all(-1),
+		drawMatches(images[0], image_params.image_features[0].keypoints,
+			images[1], image_params.image_features[1].keypoints, matches, output_img, Scalar::all(-1),
 			Scalar::all(-1), mask, DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
 	}
 	catch (const std::exception& e) {

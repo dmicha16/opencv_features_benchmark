@@ -5,8 +5,7 @@ class Orb :
 	public Benchmark {
 public:
 	Orb();
-	vector<ImageFeatures> get_orb_image_features();
-	void find_features(vector<Mat> images);
+	void find_features(vector<Mat> images, int idx);
 	~Orb();
 
 private:

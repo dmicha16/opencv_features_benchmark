@@ -4,8 +4,7 @@ class Brisk :
 	public Benchmark {
 public:
 	Brisk();
-	vector<ImageFeatures> get_brisk_image_features();
-	void find_features(vector<Mat> images);
+	void find_features(vector<Mat> images, int idx);
 	~Brisk();
 
 private:

@@ -7,11 +7,9 @@ Orb::Orb() {
 Orb::~Orb() {
 }
 
-vector<ImageFeatures> Orb::get_orb_image_features() {
-	return image_features;
-}
+void Orb::find_features(vector<Mat> images, int idx) {
 
-void Orb::find_features(vector<Mat> images) {
+	image_params_.image_index = idx;
 
 	num_images = static_cast<int> (images.size());
 	image_features.resize(num_images);

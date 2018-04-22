@@ -5,8 +5,7 @@ class Akaze :
 public:
 	Akaze();
 	~Akaze();
-	void find_features(vector<Mat> images);
-	vector<ImageFeatures> get_akaze_image_features();
+	void find_features(vector<Mat> images, int idx);
 private:
 	vector<ImageFeatures> image_features;
 	ImageParams image_params_;
