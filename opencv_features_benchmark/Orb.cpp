@@ -44,4 +44,10 @@ void Orb::find_features(vector<Mat> images) {
 
 		image_features[i].img_idx = i;
 	}
+
+	image_params_.image_features = image_features;
+	image_params_.results_type = ORB_R;
+	image_params_.images = images;
+
+	matcher(image_params_);
 }

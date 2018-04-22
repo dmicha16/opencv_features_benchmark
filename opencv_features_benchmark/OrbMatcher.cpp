@@ -5,7 +5,6 @@
 OrbMatcher::OrbMatcher() {
 }
 
-
 OrbMatcher::~OrbMatcher() {
 }
 
@@ -47,7 +46,7 @@ void OrbMatcher::matcher(int image_index) {
 			cout << e.what() << endl;
 		}
 
-		draw_my_matches(image_features, pairwise_matches, matcher_type, ORB_R, image_index);
+		//draw_my_matches(image_features, pairwise_matches, matcher_type, ORB_R, image_index);
 		pairwise_matches.clear();
 	}
 }

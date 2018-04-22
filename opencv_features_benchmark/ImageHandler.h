@@ -1,5 +1,4 @@
 #pragma once
-#pragma warning(disable : 4996)
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -35,29 +34,17 @@ using namespace cv::detail;
 #define WINPAUSE system("pause")
 #endif
 
-enum ResultsType {ORB_R = 1, AKAZE_R = 2, BRISK_R = 3};
-
-typedef struct ImageParams {
-	vector<Mat> images;
-	vector<ImageFeatures> image_features;
-	vector<MatchesInfo> pairwise_matches;
-	string matcher_type;
-	int image_index;
-	ResultsType results_type;
-};
-
-class Benchmark {
+class ImageHandler {
 public:
-	Benchmark();
-	~Benchmark();
-	void draw_keypoints(vector<Mat> images, vector<ImageFeatures> image_features, vector<MatchesInfo> pairwise_matches);
-	void draw_my_matches(ImageParams image_params);
-	void matcher(ImageParams image_params);
-
+	ImageHandler(string path);
+	~ImageHandler();
+	vector<Mat> get_images();
 private:
-	int num_images;
-	vector<String> img_names;
-	vector<Mat> images;
-	string construct_file_name(string matcher_type, ResultsType results_type, int image_index);
-};
 
+	int num_images_;
+	vector<String> img_names_;
+	vector<Mat> images_;
+
+	void read_images_(string path);
+	vector<Mat> upload_images_(vector<Mat> images, vector<Size> full_img_sizes);
+};

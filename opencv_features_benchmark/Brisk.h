@@ -10,6 +10,7 @@ public:
 
 private:
 	vector<ImageFeatures> image_features;
+	ImageParams image_params_;
 	int num_images;
 };
 

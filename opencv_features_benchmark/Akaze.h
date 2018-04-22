@@ -9,6 +9,7 @@ public:
 	vector<ImageFeatures> get_akaze_image_features();
 private:
 	vector<ImageFeatures> image_features;
+	ImageParams image_params_;
 	int num_images;
 };
 

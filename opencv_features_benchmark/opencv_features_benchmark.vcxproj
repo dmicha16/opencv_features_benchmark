@@ -153,6 +153,7 @@
     <ClInclude Include="Benchmark.h" />
     <ClInclude Include="Brisk.h" />
     <ClInclude Include="BriskMatcher.h" />
+    <ClInclude Include="ImageHandler.h" />
     <ClInclude Include="OrbMatcher.h" />
     <ClInclude Include="Orb.h" />
     <ClInclude Include="stdafx.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="Benchmark.cpp" />
     <ClCompile Include="Brisk.cpp" />
     <ClCompile Include="BriskMatcher.cpp" />
+    <ClCompile Include="ImageHandler.cpp" />
     <ClCompile Include="OrbMatcher.cpp" />
     <ClCompile Include="opencv_features_benchmark.cpp" />
     <ClCompile Include="Orb.cpp" />

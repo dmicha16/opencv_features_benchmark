@@ -47,7 +47,7 @@ void BriskMatcher::matcher(int image_index) {
 			cout << e.what() << endl;
 		}
 
-		draw_my_matches(image_features, pairwise_matches, matcher_type, BRISK_R, image_index);
+		//draw_my_matches(image_features, pairwise_matches, matcher_type, BRISK_R, image_index);
 		pairwise_matches.clear();
 	}
 }
