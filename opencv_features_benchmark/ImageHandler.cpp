@@ -13,6 +13,10 @@ vector<Mat> ImageHandler::get_images() {
 	return images_;
 }
 
+vector<String> ImageHandler::get_image_names() {
+	return img_names_;
+}
+
 void ImageHandler::read_images_(string path) {
 	vector<String> photos;
 

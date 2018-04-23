@@ -13,9 +13,11 @@ void Orb::find_features(vector<Mat> images, int idx) {
 
 	num_images = static_cast<int> (images.size());
 	image_features.resize(num_images);
-	string features_out = "Features in image #";
+	string features_out;
 
 	for (int i = 0; i < num_images; i++) {		
+
+		features_out = "Features in image: #";
 		float scaleFactor = 1.2f;
 		int nlevels = 8;
 		int edgeThreshold = 31;
@@ -38,7 +40,9 @@ void Orb::find_features(vector<Mat> images, int idx) {
 			cout << e.what() << endl;
 		}
 
-		cout << "Features in image #" << image_features[i].keypoints.size() << endl;
+		cout << "Features in image: #" << image_features[i].keypoints.size() << endl;
+		features_out += to_string(image_features[i].keypoints.size());
+		CLOG(features_out, INFO);
 
 		image_features[i].img_idx = i;
 	}

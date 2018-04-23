@@ -25,6 +25,8 @@
 #include "opencv2/stitching/warpers.hpp"
 #include "opencv2/core/ocl.hpp"
 
+#include "clogging/Logger.h"
+
 #pragma region namespaces
 using namespace std;
 using namespace cv;
@@ -37,7 +39,7 @@ using namespace cv::detail;
 
 enum ResultsType {ORB_R = 1, AKAZE_R = 2, BRISK_R = 3};
 
-typedef struct ImageParams {
+struct ImageParams {
 	vector<Mat> images;
 	vector<ImageFeatures> image_features;
 	vector<MatchesInfo> pairwise_matches;
@@ -48,16 +50,14 @@ typedef struct ImageParams {
 
 class Benchmark {
 public:
+	INIT_CLOGGING;
 	Benchmark();
 	~Benchmark();
-	void draw_keypoints(vector<Mat> images, vector<ImageFeatures> image_features, vector<MatchesInfo> pairwise_matches);
-	void draw_my_matches(ImageParams image_params);
+	void draw_keypoints(vector<Mat> images, vector<ImageFeatures> image_features, vector<MatchesInfo> pairwise_matches);	
 	void matcher(ImageParams image_params);
 
 private:
-	int num_images;
-	vector<String> img_names;
-	vector<Mat> images;
-	string construct_file_name(string matcher_type, ResultsType results_type, int image_index);
+	string construct_file_name_(string matcher_type, ResultsType results_type, int image_index);
+	void draw_matches_(ImageParams image_params);
 };
 

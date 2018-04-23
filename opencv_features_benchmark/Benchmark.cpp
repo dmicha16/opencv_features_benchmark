@@ -3,7 +3,7 @@
 
 
 Benchmark::Benchmark() {
-
+	ADD_FILE("clogging.log");
 }
 
 Benchmark::~Benchmark() {
@@ -13,15 +13,14 @@ void Benchmark::draw_keypoints(vector<Mat> images, vector<ImageFeatures> image_f
 	
 }
 
-void Benchmark::draw_my_matches(ImageParams image_params) {
+void Benchmark::draw_matches_(const ImageParams image_params) {
 
-	string output_location = construct_file_name(image_params.matcher_type, image_params.results_type, image_params.image_index);
-	int image_idx = image_params.image_index;
-	cout << "image_params.images.size(): " << image_params.images.size() << endl;
+	string output_location = construct_file_name_(image_params.matcher_type, image_params.results_type, image_params.image_index);
+	size_t image_idx = image_params.image_index;
 	vector<Mat> images = image_params.images;
-
 	vector<DMatch> matches = image_params.pairwise_matches[1].matches;
 	vector<char> mask(matches.size(), 1);
+
 	Mat output_img;
 
 	try {
@@ -33,28 +32,23 @@ void Benchmark::draw_my_matches(ImageParams image_params) {
 		cout << e.what() << endl;
 	}
 
-	Mat outImg;
-	resize(output_img, outImg, cv::Size(), 1, 1);
-	//imshow("Matching", outImg);
-	imwrite(output_location, outImg);
-	printf("Image result written.\n");
+	Mat resized_image;
+	resize(output_img, resized_image, cv::Size(), 1, 1);
+
+	if (imwrite(output_location, resized_image)) {
+		printf("Image result written.\n");
+		CLOG("Image result successfully written.", INFO);
+	}		
+	else {
+		printf("Image failed to write.\n");
+		CLOG("Image failed to write.", ERR);
+	}
+		
 }
 
-string Benchmark::construct_file_name(string matcher_type, ResultsType results_type, int image_index) {
+string Benchmark::construct_file_name_(string matcher_type, ResultsType results_type, int image_index) {
 
 	string output_location = "../opencv_features_benchmark/Images";
-	/*string c;
-	int r1, r2, r3;
-	srand(time(NULL));
-
-	for (int i = 0; i < 3; i++){
-		r1 = rand() % 26;
-		r2 = rand() % 26;
-		r3 = rand() % 26;
-		c = 'a' + r1;
-		c += 'a' + r2;
-		c += 'a' + r3;
-	}*/
 
 	switch (results_type) {
 	case ORB_R:
@@ -89,19 +83,22 @@ void Benchmark::matcher(ImageParams image_params) {
 			current_matcher = makePtr<BestOf2NearestMatcher>(false, try_cuda, match_conf);
 			matcher_type = "BestOf2NearestMatcher";
 			image_params.matcher_type = matcher_type;
-			printf("BestOf2NearestMatcher\n");
+			CLOG(matcher_type, INFO);
+			printf("BestOf2NearestMatcher.\n");
 			break;
 		case 2:
 			current_matcher = makePtr<BestOf2NearestRangeMatcher>(false, try_cuda, match_conf);
 			matcher_type = "BestOf2NearestRangeMatcher";
 			image_params.matcher_type = matcher_type;
-			printf("BestOf2NearestRangeMatcher\n");
+			CLOG(matcher_type, INFO);
+			printf("BestOf2NearestRangeMatcher.\n");
 			break;
 		case 3:
 			current_matcher = makePtr<AffineBestOf2NearestMatcher>(false, try_cuda, match_conf);
 			matcher_type = "AffineBestOf2NearestMatcher";
 			image_params.matcher_type = matcher_type;
-			printf("AffineBestOf2NearestMatcher\n");
+			CLOG(matcher_type, INFO);
+			printf("AffineBestOf2NearestMatcher.\n");
 			break;
 		}
 
@@ -114,7 +111,7 @@ void Benchmark::matcher(ImageParams image_params) {
 
 		image_params.pairwise_matches = pairwise_matches;
 
-		draw_my_matches(image_params);
+		draw_matches_(image_params);
 		pairwise_matches.clear();
 	}
 }

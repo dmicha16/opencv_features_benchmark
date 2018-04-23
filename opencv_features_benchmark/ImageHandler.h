@@ -39,6 +39,7 @@ public:
 	ImageHandler(string path);
 	~ImageHandler();
 	vector<Mat> get_images();
+	vector<String> get_image_names();
 private:
 
 	int num_images_;
