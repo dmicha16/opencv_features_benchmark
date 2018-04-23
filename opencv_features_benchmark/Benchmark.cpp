@@ -75,6 +75,7 @@ void Benchmark::matcher(ImageParams image_params) {
 	vector<MatchesInfo> pairwise_matches;
 	Ptr<FeaturesMatcher> current_matcher;
 	string matcher_type;
+	string number_of_matches;
 
 	for (size_t i = 1; i < 4; i++) {
 
@@ -108,10 +109,13 @@ void Benchmark::matcher(ImageParams image_params) {
 		catch (const std::exception& e) {
 			cout << e.what() << endl;
 		}
+		number_of_matches = "Number of matches: " + to_string(pairwise_matches[1].matches.size());
+		CLOG(number_of_matches, INFO);
 
 		image_params.pairwise_matches = pairwise_matches;
 
 		draw_matches_(image_params);
 		pairwise_matches.clear();
+		number_of_matches = "";
 	}
 }
