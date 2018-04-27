@@ -40,12 +40,16 @@ public:
 	~ImageHandler();
 	vector<Mat> get_images();
 	vector<String> get_image_names();
+	vector<String> get_short_names();
+	
 private:
 
 	int num_images_;
 	vector<String> img_names_;
+	vector<String> short_img_names_;
 	vector<Mat> images_;
 
 	void read_images_(string path);
 	vector<Mat> upload_images_(vector<Mat> images, vector<Size> full_img_sizes);
+	void shorten_image_names_(vector<String> img_names);
 };

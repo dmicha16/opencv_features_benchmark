@@ -17,6 +17,10 @@ vector<String> ImageHandler::get_image_names() {
 	return img_names_;
 }
 
+vector<String> ImageHandler::get_short_names() {
+	return short_img_names_;
+}
+
 void ImageHandler::read_images_(string path) {
 	vector<String> photos;
 
@@ -33,6 +37,7 @@ void ImageHandler::read_images_(string path) {
 
 	num_images_ = static_cast <int> (img_names_.size());
 	vector<Size> full_img_sizes(num_images_);
+	shorten_image_names_(img_names_);
 
 	images_.resize(num_images_);
 	images_ = upload_images_(images_, full_img_sizes);
@@ -73,4 +78,24 @@ vector<Mat> ImageHandler::upload_images_(vector<Mat> images, vector<Size> full_i
 	full_img.release();
 	img.release();
 	return images;
+}
+
+void ImageHandler::shorten_image_names_(vector<String> img_names) {
+
+	string img_name;
+	string temp;
+	for (size_t i = 0; i < img_names.size(); i++) {
+		temp.assign(img_names[i]);
+		for (size_t j = 0; j < temp.size(); j++) {
+			if (temp.at(j) == '\\') {
+				for (size_t k = (j + 1); k < temp.size(); k++) {
+					img_name += temp.at(k);
+				}
+				break;
+			}
+		}
+		short_img_names_.push_back(img_name);
+		img_name.clear();
+		temp.clear();
+	}
 }

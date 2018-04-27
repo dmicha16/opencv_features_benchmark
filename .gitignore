@@ -260,3 +260,6 @@ paket-files/
 __pycache__/
 *.pyc
 opencv_features_benchmark/clogging/json.hpp
+*.jpg
+*.jpg
+*.jpg

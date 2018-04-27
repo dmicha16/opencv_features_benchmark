@@ -19,7 +19,7 @@ void Brisk::find_features(vector<Mat> images, int idx) {
 
 	for (int i = 0; i < num_images; i++) {
 
-		features_out = "Features in image: #";
+		features_out.clear();
 		
 		int thresh = 30;
 		int octaves = 3;
@@ -37,9 +37,9 @@ void Brisk::find_features(vector<Mat> images, int idx) {
 			cout << e.what() << endl;
 		}
 
-		cout << "Features in image: #" << image_features[i].keypoints.size() << endl;
+		cout << "Features in image: " << idx << ": " << image_features[i].keypoints.size() << endl;
 		features_out += to_string(image_features[i].keypoints.size());
-		CLOG(features_out, INFO);
+		CLOG(features_out, INFO, CSV_A);
 
 		image_features[i].img_idx = i;
 	}

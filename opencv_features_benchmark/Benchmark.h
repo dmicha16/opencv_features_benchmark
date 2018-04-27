@@ -5,8 +5,9 @@
 #include <string>
 #include <algorithm>
 #include <filesystem>
-#include<cstdlib>
-#include<ctime>
+#include <cstdlib>
+#include <ctime>
+#include <vector>
 
 #include "opencv2/opencv_modules.hpp"
 #include <opencv2/features2d/features2d.hpp>
@@ -59,5 +60,6 @@ public:
 private:
 	string construct_file_name_(string matcher_type, ResultsType results_type, int image_index);
 	void draw_matches_(ImageParams image_params);
+	void threshold_calculator_(const ImageParams image_params);
 };
 

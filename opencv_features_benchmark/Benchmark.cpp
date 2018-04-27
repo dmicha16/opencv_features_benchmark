@@ -1,14 +1,18 @@
 #include "stdafx.h"
 #include "Benchmark.h"
 
+struct SortOperator {
+	bool operator() (int i, int j) {
+		return (i < j);
+	}
+} sort_operator_;
 
 Benchmark::Benchmark() {
-	ADD_FILE("clogging.log");
+	ADD_FILE("clogging.csv");
 }
 
 Benchmark::~Benchmark() {
 }
-
 void Benchmark::draw_keypoints(vector<Mat> images, vector<ImageFeatures> image_features, vector<MatchesInfo> pairwise_matches) {
 	
 }
@@ -36,12 +40,12 @@ void Benchmark::draw_matches_(const ImageParams image_params) {
 	resize(output_img, resized_image, cv::Size(), 1, 1);
 
 	if (imwrite(output_location, resized_image)) {
-		printf("Image result written.\n");
-		CLOG("Image result successfully written.", INFO);
+		//printf("Image result written.\n");
+		//CLOG("Image result successfully written.", INFO);
 	}		
 	else {
-		printf("Image failed to write.\n");
-		CLOG("Image failed to write.", ERR);
+		//printf("Image failed to write.\n");
+		CLOG("Image failed to write.", ERR, CSV);
 	}
 		
 }
@@ -64,6 +68,31 @@ string Benchmark::construct_file_name_(string matcher_type, ResultsType results_
 	return output_location;
 }
 
+void Benchmark::threshold_calculator_(const ImageParams image_params) {
+
+	vector<DMatch> matches = image_params.pairwise_matches[1].matches;
+	vector<float> distances;
+	vector<float> thresholds;
+
+	for (size_t i = 0; i < matches.size(); i++) {
+		distances.push_back(matches[i].distance);
+	}
+
+	std::sort (distances.begin(), distances.end(), sort_operator_);
+	for (float i = 0.1; i < 0.5; i+=0.1) {
+		thresholds.push_back(distances.size() * i);
+	}
+
+	float avarage = 0;
+	for (size_t i = 0; i < distances.size(); i++) {
+		avarage += distances[i];
+	}
+	avarage = avarage / distances.size();
+	string av = to_string(avarage);
+
+	CLOG(av, INFO, CSV_A);
+}
+
 void Benchmark::matcher(ImageParams image_params) {
 
 	vector<ImageFeatures> image_features = image_params.image_features;
@@ -76,30 +105,31 @@ void Benchmark::matcher(ImageParams image_params) {
 	Ptr<FeaturesMatcher> current_matcher;
 	string matcher_type;
 	string number_of_matches;
+	string number_of_matches_clog;
 
 	for (size_t i = 1; i < 4; i++) {
 
 		switch (i) {
 		case 1:
 			current_matcher = makePtr<BestOf2NearestMatcher>(false, try_cuda, match_conf);
-			matcher_type = "BestOf2NearestMatcher";
+			matcher_type = "DEFAULT";
 			image_params.matcher_type = matcher_type;
-			CLOG(matcher_type, INFO);
-			printf("BestOf2NearestMatcher.\n");
+			CLOG(matcher_type, INFO, CSV);
+			printf("DEFAULT.\n");
 			break;
 		case 2:
 			current_matcher = makePtr<BestOf2NearestRangeMatcher>(false, try_cuda, match_conf);
-			matcher_type = "BestOf2NearestRangeMatcher";
+			matcher_type = "RANGE";
 			image_params.matcher_type = matcher_type;
-			CLOG(matcher_type, INFO);
-			printf("BestOf2NearestRangeMatcher.\n");
+			CLOG(matcher_type, INFO, CSV);
+			printf("RANGE.\n");
 			break;
 		case 3:
 			current_matcher = makePtr<AffineBestOf2NearestMatcher>(false, try_cuda, match_conf);
-			matcher_type = "AffineBestOf2NearestMatcher";
+			matcher_type = "AFFINE";
 			image_params.matcher_type = matcher_type;
-			CLOG(matcher_type, INFO);
-			printf("AffineBestOf2NearestMatcher.\n");
+			CLOG(matcher_type, INFO, CSV);
+			printf("AFFINE.\n");
 			break;
 		}
 
@@ -109,11 +139,16 @@ void Benchmark::matcher(ImageParams image_params) {
 		catch (const std::exception& e) {
 			cout << e.what() << endl;
 		}
-		number_of_matches = "Number of matches: " + to_string(pairwise_matches[1].matches.size());
-		CLOG(number_of_matches, INFO);
+
+		number_of_matches = "Total number of matches:, " + to_string(pairwise_matches[1].matches.size());
+		number_of_matches_clog = to_string(pairwise_matches[1].matches.size());
+		CLOG(" ", INFO, CSV_A);
+		CLOG(" ", INFO, CSV_A);
+		CLOG(number_of_matches_clog, INFO, CSV_A);
 
 		image_params.pairwise_matches = pairwise_matches;
 
+		threshold_calculator_(image_params);
 		draw_matches_(image_params);
 		pairwise_matches.clear();
 		number_of_matches = "";

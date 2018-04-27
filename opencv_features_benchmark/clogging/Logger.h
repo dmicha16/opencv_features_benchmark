@@ -2,14 +2,14 @@
 #include "Timer.h"
 
 // Uncomment any of these macros for more logging and debugging options.
-	// To use Windows.h and OutputDebugString in any Visual Studio version.
+// To use Windows.h and OutputDebugString in any Visual Studio version.
 #define CLOG_USE_VS 1
 
 //------------
 
 #ifdef CLOG_USE_VS 1
-	#include <Windows.h>
-	#define CLOG_VS(output_msg) Logger.ClogVS(output_msg)
+#include <Windows.h>
+#define CLOG_VS(output_msg) Logger.ClogVS(output_msg)
 #endif // CLOG_USE_VS 1
 
 //Init clogging macro:
@@ -29,7 +29,7 @@
 #define CLOG_VS2(output_msg, level) Logger.ClogVS(output_msg, level)
 #define CLOG_VS1(output_msg) Logger.ClogVS(output_msg)
 
-#define ADD_FILE3(file_name, path, future_param)
+#define ADD_FILE3(file_name, path, extension)
 #define ADD_FILE2(file_name, path) Logger.AddFile(file_name, path)
 #define ADD_FILE1(file_name) Logger.AddFile(file_name)
 
@@ -39,12 +39,13 @@
 
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
 
-enum Output {DEFAULT, JSON, BOTH};
-enum Output_vs {DEBUG_ONLY, TO_FILE_JSON, TO_FILE_DEF, TO_FILE_BOTH};
-enum Verbosity {DEBUG, INFO, NOTICE, WARN, ERR, CRIT, ALERT, EMERG};
+enum Output { DEFAULT, JSON, BOTH, CSV, CSV_A };
+enum Output_vs { DEBUG_ONLY, TO_FILE_JSON, TO_FILE_DEF, TO_FILE_BOTH };
+enum Verbosity { DEBUG, INFO, NOTICE, WARN, ERR, CRIT, ALERT, EMERG };
+enum Extension { E_CSV };
 
-namespace clogging {	
-	
+namespace clogging {
+
 	class Logger {
 	private:
 
@@ -55,13 +56,16 @@ namespace clogging {
 		void LineSyntax();
 		void TXTSyntax(Verbosity level, std::string output_msg);
 		void JSONSyntax(Verbosity level, std::string output_msg);
+		void CSVSyntax(Verbosity level, std::string output_msg);
+		void CSVSyntaxAppend(Verbosity level, const std::string output_msg);
 		void SystemInitOutput(std::string file_name, std::string path);
 		void SystemInitOutput(std::string file_name);
 		std::stringstream SystemInitOutputFormat();
 		std::string EnumStringValue(Verbosity level);
-				
+
 	public:
 
+		void AddFile(std::string file_name, std::string path, Extension file_extension);
 		void AddFile(std::string file_name, std::string path);
 		void AddFile(std::string file_name);
 
@@ -71,12 +75,11 @@ namespace clogging {
 
 		void Clog(std::string output_msg, Verbosity level, Output specify_type);
 		void Clog(std::string output_msg, Verbosity level);
-		void Clog(std::string output_msg);		
+		void Clog(std::string output_msg);
 
 		Logger();
 		~Logger();
-	};	
+	};
 }
-
 
 
