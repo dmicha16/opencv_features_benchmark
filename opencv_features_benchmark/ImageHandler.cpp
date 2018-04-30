@@ -66,14 +66,14 @@ vector<Mat> ImageHandler::upload_images_(vector<Mat> images, vector<Size> full_i
 				work_scale = min(1.0, sqrt(work_megapix * 1e6 / full_img.size().area()));
 				is_work_scale_set = true;
 			}
-			resize(full_img, img, Size(), work_scale, work_scale, INTER_LINEAR_EXACT);
+			//resize(full_img, img, Size(), work_scale, work_scale, INTER_LINEAR_EXACT);
 		}
-		if (!is_seam_scale_set) {
+		/*if (!is_seam_scale_set) {
 			seam_scale = min(1.0, sqrt(seam_megapix * 1e6 / full_img.size().area()));
 			seam_work_aspect = seam_scale / work_scale;
 			is_seam_scale_set = true;
-		}
-		images[i] = img.clone();
+		}*/
+		images[i] = full_img.clone();
 	}
 	full_img.release();
 	img.release();
