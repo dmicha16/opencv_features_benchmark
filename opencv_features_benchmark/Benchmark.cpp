@@ -47,7 +47,30 @@ void Benchmark::draw_matches_(const ImageParams image_params) {
 		//printf("Image failed to write.\n");
 		CLOG("Image failed to write.", ERR, CSV);
 	}
-		
+}
+
+float Benchmark::calculate_deviation_(float avarage, vector<float> distances, int num_below_thresh) {
+
+	vector<float> distances_below_thresh;
+	float standard_deviation = 0;
+	float sum = 0;
+	int devider = 0;
+
+	if (num_below_thresh == 0) {
+		for (size_t i = 0; i < distances.size(); i++)
+			distances_below_thresh.push_back(distances[i]);
+		devider = distances.size();
+	}
+	else {
+		for (size_t i = 0; i < distances[num_below_thresh]; i++)
+			distances_below_thresh.push_back(distances[i]);
+		devider = num_below_thresh;
+	}	
+
+	for (size_t i = 0; i < distances_below_thresh.size(); i++)
+		standard_deviation += pow(distances_below_thresh[i] - avarage, 2);		
+
+	return sqrt(standard_deviation / devider);
 }
 
 string Benchmark::construct_file_name_(string matcher_type, ResultsType results_type, int image_index) {
@@ -72,25 +95,73 @@ void Benchmark::threshold_calculator_(const ImageParams image_params) {
 
 	vector<DMatch> matches = image_params.pairwise_matches[1].matches;
 	vector<float> distances;
-	vector<float> thresholds;
+	vector<float> thresholds;	
+	float thresh = 0;
 
-	for (size_t i = 0; i < matches.size(); i++) {
+	for (size_t i = 0; i < matches.size(); i++)
 		distances.push_back(matches[i].distance);
-	}
 
 	std::sort (distances.begin(), distances.end(), sort_operator_);
-	for (float i = 0.1; i < 0.5; i+=0.1) {
-		thresholds.push_back(distances.size() * i);
+	for (float i = 0.1; i < 0.5; i += 0.1) {		
+		thresh = distances[(int)distances.size() * i];
+		thresholds.push_back(thresh);
 	}
 
+	string msg;
 	float avarage = 0;
-	for (size_t i = 0; i < distances.size(); i++) {
-		avarage += distances[i];
-	}
-	avarage = avarage / distances.size();
-	string av = to_string(avarage);
+	int num_below_thresh = 0;
+	stringstream ss;
 
+	for (size_t i = 0; i < distances.size(); i++)
+		avarage += distances[i];
+
+	avarage = avarage / distances.size();
+	string av = to_string((int)avarage);
 	CLOG(av, INFO, CSV_A);
+
+	float deviation = calculate_deviation_(avarage, distances, num_below_thresh);
+	ss << setprecision(3) << deviation;
+	CLOG(ss.str(), INFO, CSV_A);
+	ss.str(string());
+
+	CLOG(" ", INFO, CSV_A);
+
+	avarage = 0;
+	deviation = 0;
+
+	for (size_t i = 0; i < thresholds.size(); i++) {		
+		for (size_t j = 0; j < distances.size(); j++) {
+			if (distances[j] <= thresholds[i]) {
+				avarage += distances[j];
+				num_below_thresh++;
+			}
+		}
+
+		// current threshold		
+		msg = to_string(thresholds[i]);
+		CLOG(msg, INFO, CSV_A);
+		msg.clear();
+
+		//number of matches under the first threshold		
+		msg = to_string(num_below_thresh);
+		CLOG(msg, INFO, CSV_A);		
+		msg.clear();
+		
+		//average of matches below threshold
+		avarage = avarage / num_below_thresh;
+		msg = to_string((int)avarage);
+		CLOG(msg, INFO, CSV_A);
+
+		deviation = calculate_deviation_(avarage, distances, num_below_thresh);		
+		ss << setprecision(3) << deviation;		
+		CLOG(ss.str(), INFO, CSV_A);
+		CLOG(" ", INFO, CSV_A);
+		
+		ss.str(string());
+		msg.clear();
+		num_below_thresh = 0;
+		avarage = 0;
+	}		
 }
 
 void Benchmark::matcher(ImageParams image_params) {
@@ -107,7 +178,7 @@ void Benchmark::matcher(ImageParams image_params) {
 	string number_of_matches;
 	string number_of_matches_clog;
 
-	for (size_t i = 1; i < 4; i++) {
+	for (size_t i = 2; i < 4; i++) {
 
 		switch (i) {
 		case 1:

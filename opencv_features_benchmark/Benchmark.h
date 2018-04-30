@@ -58,6 +58,7 @@ public:
 	void matcher(ImageParams image_params);
 
 private:
+	float calculate_deviation_(float avarage, vector<float> distances, int num_below_thresh);
 	string construct_file_name_(string matcher_type, ResultsType results_type, int image_index);
 	void draw_matches_(ImageParams image_params);
 	void threshold_calculator_(const ImageParams image_params);

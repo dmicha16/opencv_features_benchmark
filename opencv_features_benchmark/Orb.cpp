@@ -29,7 +29,7 @@ void Orb::find_features(vector<Mat> images, int idx) {
 
 		Ptr<ORB> detector_desciptor;
 
-		detector_desciptor = ORB::create(150000000, scaleFactor, nlevels, edgeThreshold,
+		detector_desciptor = ORB::create(1500, scaleFactor, nlevels, edgeThreshold,
 			firstLevel, WTA_K, scoreType, patchSize, fastThreshold);
 
 		try {
