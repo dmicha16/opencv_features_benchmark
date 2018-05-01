@@ -34,22 +34,25 @@ using namespace cv::detail;
 #define WINPAUSE system("pause")
 #endif
 
-class ImageHandler {
-public:
-	ImageHandler(string path);
-	~ImageHandler();
-	vector<Mat> get_images();
-	vector<String> get_image_names();
-	vector<String> get_short_names();
-	
-private:
-
-	int num_images_;
-	vector<String> img_names_;
-	vector<String> short_img_names_;
-	vector<Mat> images_;
-
-	void read_images_(string path);
-	vector<Mat> upload_images_(vector<Mat> images);
-	void shorten_image_names_(vector<String> img_names);
+typedef struct Rectengales {
+	vector<Rect> rectengales;
+	void desginate_rectengales(int desired_rect);
 };
+
+class RoiCalculator {
+
+public:	
+	RoiCalculator();
+	~RoiCalculator();
+
+	void set_images(vector<Mat> inc_images);
+	void calculate_roi(int desired_rect);
+	bool check_keypoint();	
+
+private:
+	Rectengales rect_s_;
+	vector<Mat> images_;
+	int num_images_;
+	void write_roi(Mat curr_img);
+};
+
